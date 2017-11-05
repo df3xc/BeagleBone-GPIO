@@ -8,8 +8,10 @@ Currently implemented functions:
 
 ```c
 int init(); /*!< mmap /dev/mem into memory */
-int digitalWrite(PIN p, uint8_t mode);
-int digitalRead(PIN p);
+int digitalInput(PIN p);  // configure PIN as input pin
+int digitalOutput(PIN p);  // configure PIN as output pin
+int digitalWrite(PIN p, uint8_t setting); // set pin high(setting=1) or low(setting=0)
+int digitalRead(PIN p); // returns 0 : pin is low  >0 pin is high
 int analogRead(PIN p);
 ```
 
