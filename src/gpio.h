@@ -24,7 +24,9 @@
 #define HIGH (1)
 #define LOW  (0) 
 int init(); /*!< mmap /dev/mem into memory */
-int pinMode(PIN pin, unsigned char direction, unsigned char mux, unsigned char pull);
+
+void digitalInput(PIN p);
+void digitalOutput(PIN p);
 int digitalWrite(PIN p, uint8_t mode);
 int digitalRead(PIN p);
 int analogRead(PIN p);

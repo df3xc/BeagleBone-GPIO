@@ -10,18 +10,25 @@
  */
 
 #include "gpio.h"
+#include "am335x.h"
+#include <stdio.h>
 
 static volatile uint32_t *map;
 static char mapped = FALSE;
+
 
 /**
  * map /dev/mem to memory
  *
  * @returns whether or not the mapping of /dev/mem into memory was successful
  */
+
 int init() {
 	if(!mapped) {
 		int fd;
+
+		printf("\n\r MAP MEMORY using /dev/mem");
+
 		fd = open("/dev/mem", O_RDWR);
 		if(fd == -1) {
 			perror("Unable to open /dev/mem");
@@ -33,68 +40,57 @@ int init() {
 			perror("Unable to map /dev/mem");
 			exit(EXIT_FAILURE);
 		}
+		printf(" ... map = 0x%.4X \n\r", map);
+
 		mapped = TRUE;
 	}
 	return mapped;
 }
 
-/**
- * Set up a pin for future use
- *
- * @param pin The pin to set up
- * @param direction Configure the pin as INPUT or OUTPUT
- * @param mux Mux mode to use for this pin 0-7
- * @param pull PULLUP, PULLDOWN, or DISABLED
- * @returns the pin was successfully configured
- */
-int pinMode(PIN pin, unsigned char direction, unsigned char mux, unsigned char pull) {
-	// map over the values of pull, 0=pulldown, 1=pullup, 2=disabled
-	int pin_data = 0;
-	FILE *fp = NULL;
-	char muxfile[64];
-	pin_data |=  mux; // set the mux mode
-	// set up the pull up/down resistors
-	if(pull == DISABLED) pin_data |= 1 << 3;
-	if(pull == PULLUP)   pin_data |= 1 << 4;
-	pin_data |= direction << 5; // set up the pin direction
-	// write the pin_data
-	sprintf(muxfile, "%s/%s", CONFIG_MUX_PATH, pin.mux);
-	// open the file
-	if((fp = fopen(muxfile, "w")) == NULL) {
-		perror("Cannot set pin mode");
-		exit(1);
-	}
-	fprintf(fp, "%x", pin_data);
-	fclose(fp);
 
-	return 1;
+/**
+ * Configure GPIO as OUTPUT pin
+ */
+
+void digitalInput(PIN p)
+
+{
+	init();
+	map[(p.gpio_bank - MMAP_OFFSET + GPIO_OE) / 4] &= ~(1 << p.bank_id); // set pin as input pin
+}
+
+/**
+* Configure GPIO as INPUT pin
+*/
+
+void digitalOutput(PIN p)
+{
+	init();
+	map[(p.gpio_bank - MMAP_OFFSET + GPIO_OE) / 4] &= ~(1 << p.bank_id); // set pin as output pin
 }
 
 
 /**
  * Set a GPIO digital output * @param p Pin to write to
  *
- * @param mode Position to set the pin, HIGH or LOW
+ * @param setting :  HIGH or LOW
  * @returns output was successfully written
  */
-int digitalWrite(PIN p, uint8_t mode) {
-	init();
-	map[(p.gpio_bank-MMAP_OFFSET+GPIO_OE)/4] &= ~(1<<p.bank_id);
-	if(mode == HIGH) map[(p.gpio_bank-MMAP_OFFSET+GPIO_DATAOUT)/4] |= 1<<p.bank_id;
+int digitalWrite(PIN p, uint8_t setting) 
+{
+	if(setting == HIGH) map[(p.gpio_bank-MMAP_OFFSET+GPIO_DATAOUT)/4] |= 1<<p.bank_id;
 	else map[(p.gpio_bank-MMAP_OFFSET+GPIO_DATAOUT)/4] &= ~(1<<p.bank_id);
-
 	return 1;
 }
 
 /**
- * Read the input from a digital input. You must set 
- * the pin as an INPUT using the pinMode function
+ * Read the input from a digital input. 
  *
  * @param p Pin to read from
  * @returns the value of the pin
  */
-int digitalRead(PIN p) {
-	init();
+int digitalRead(PIN p) 
+{
 	return (map[(p.gpio_bank-MMAP_OFFSET+GPIO_DATAIN)/4] & (1<<p.bank_id))>>p.bank_id;
 }
 

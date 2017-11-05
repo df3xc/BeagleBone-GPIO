@@ -16,6 +16,25 @@
 #define MMAP_OFFSET (0x44C00000)
 #define MMAP_SIZE   (0x481AEFFF-MMAP_OFFSET)
 
+/* Control Module Register (pin multiplexer) */
+
+#define CM_BASE (0x44E10000)  /* Base address */
+
+/* 
+   The names from documents spruh73p.pdf are uses here 
+   Refer for table 9-10 "Control Module Registers"
+
+   The pins are presented in am3358_cpu_datasheet
+   Refer to table 4-1 "Pin Attributs"
+
+   As I want to deal with GPIO0_0 and GPIO0_1 only,
+   the list of defines has just 2 entries
+
+*/
+
+#define CONF_MDIO (0x948)  // access to GPIO0_0  
+#define CONF_MDC  (0x94C)  // access to GPIO1_1
+
 /* Clock Module Memory Registers */
 #define CM_WKUP (0x44E00400)
 #define CM_WKUP_ADC_TSC_CLKCTRL (CM_WKUP+0xBC)
@@ -31,14 +50,14 @@
 /* GPIO Memory Registers */
 #define GPIO_REGISTER_SIZE (4)
 
-#define GPIO0 	(0x44E07000)
+#define GPIO0 		(0x44E07000)
 #define GPIO1		(0x4804C000)
 #define GPIO2		(0x481AC000)
 #define GPIO3		(0x481AE000)
 
 #define GPIO_CLEARDATAOUT (0x190)
 #define GPIO_SETDATAOUT   (0x194)
-#define GPIO_OE			      (0x134)
+#define GPIO_OE			  (0x134)
 #define GPIO_DATAOUT      (0x13C)
 #define GPIO_DATAIN       (0x138)
 

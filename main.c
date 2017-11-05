@@ -1,8 +1,15 @@
 #include "src/gpio.h"
+#include "src/am335x.h"
 
 int main() {
+
+	digitalOutput(USR0);
+	digitalOutput(USR1);
+	digitalOutput(USR2);
+	digitalOutput(USR3);
+
 	while(1) {
-		/* write a fancy led pattern
+		/* write a fancy led pattern */
 		digitalWrite(USR3, HIGH);
 		usleep(50000);
 		digitalWrite(USR2, HIGH);
@@ -19,10 +26,7 @@ int main() {
 		usleep(50000);
 		digitalWrite(USR0, LOW);
 		usleep(50000);
-		*/
 
-	  	// set P8_3 as an INPUT with PULLDOWN enabled
-	  	pinMode(P8_3, INPUT, 7, PULLDOWN);
 		// turn on USR2 LED when P8_3 is set high
 		digitalWrite(USR2, digitalRead(P8_3));
 
