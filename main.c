@@ -7,9 +7,11 @@ int main() {
 	digitalOutput(USR1);
 	digitalOutput(USR2);
 	digitalOutput(USR3);
+  digitalOutput(P8_8);
 
 	while(1) {
 		/* write a fancy led pattern */
+		digitalWrite(P8_8, HIGH);    
 		digitalWrite(USR3, HIGH);
 		usleep(50000);
 		digitalWrite(USR2, HIGH);
@@ -18,6 +20,7 @@ int main() {
 		usleep(50000);
 		digitalWrite(USR0, HIGH);
 		usleep(50000);
+ 		digitalWrite(P8_8, LOW);       
 		digitalWrite(USR3, LOW);
 		usleep(50000);
 		digitalWrite(USR2, LOW);

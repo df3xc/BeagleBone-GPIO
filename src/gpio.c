@@ -49,18 +49,18 @@ int init() {
 
 
 /**
- * Configure GPIO as OUTPUT pin
+ * Configure GPIO as INPUT pin
  */
 
 void digitalInput(PIN p)
 
 {
 	init();
-	map[(p.gpio_bank - MMAP_OFFSET + GPIO_OE) / 4] &= ~(1 << p.bank_id); // set pin as input pin
+	map[(p.gpio_bank - MMAP_OFFSET + GPIO_OE) / 4] |= (1 << p.bank_id); // set pin as input pin
 }
 
 /**
-* Configure GPIO as INPUT pin
+* Configure GPIO as OUTPUT pin
 */
 
 void digitalOutput(PIN p)
