@@ -1,3 +1,5 @@
+
+
 ### GPIO Library for BeagleBone
 
 #### high performance I/O 
@@ -6,12 +8,14 @@ Currently implemented functions:
 
 ```c
 int init(); /*!< mmap /dev/mem into memory */
-int pinMode(PIN pin, unsigned char direction, unsigned char mux,
-unsigned char pull);
-int digitalWrite(PIN p, uint8_t mode);
-int digitalRead(PIN p);
+int digitalInput(PIN p);  // configure PIN as input pin
+int digitalOutput(PIN p);  // configure PIN as output pin
+int digitalWrite(PIN p, uint8_t setting); // set pin high(setting=1) or low(setting=0)
+int digitalRead(PIN p); // returns 0 : pin is low  >0 pin is high
 int analogRead(PIN p);
 ```
+
+HELP: https://github.com/df3xc/BeagleBone-GPIO/wiki
 
 TODO:
   - PWM
