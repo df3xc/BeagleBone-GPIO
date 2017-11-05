@@ -1,3 +1,5 @@
+
+
 ### GPIO Library for BeagleBone
 
 #### high performance I/O 
@@ -10,6 +12,8 @@ int digitalWrite(PIN p, uint8_t mode);
 int digitalRead(PIN p);
 int analogRead(PIN p);
 ```
+
+HELP: https://github.com/df3xc/BeagleBone-GPIO/wiki
 
 TODO:
   - PWM
