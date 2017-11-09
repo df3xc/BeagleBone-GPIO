@@ -12,6 +12,9 @@ RM = rm -f
 all: $(OBJ)
 	ar -rc $(NAME) $(OBJ)
 	ranlib $(NAME)
+	cp $(NAME) /lib
+	
+	
 
 test: $(NAME) $(TMO)
 	cc -L$(LIBPATH) $(TMO) $(LIBS) -o $(TMN)
